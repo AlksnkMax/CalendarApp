@@ -1,0 +1,49 @@
+<div class="calendar">
+  <p class="month-and-year">{{month}}<span> {{date.getFullYear()}}</span></p>
+  <article class="col-xs-1 day-in-week-block" ng-repeat="day in daysOfWeek">
+    {{day}}
+  </article>
+  <article class="col-xs-1 day-in-week-block-3" ng-repeat="day in daysOfWeek">
+    {{day.substring(0,3)}}
+  </article>
+  <article class="col-xs-1 day-block"
+  ng-repeat="day in calendarData track by $index" ng-click="openEventList($index, day);"
+  ng-class="{
+    'today': day.date.getDate() == date.getDate(),
+    'day-off': ($index+1)%7 == 0 || ($index+2)%7 == 0,
+    'real-day': day.date
+  }">
+    <article class="date">
+      {{day.date.getDate()}}
+    </article>
+    <article class="event-preview holiday" ng-show="day.holiday && countEventsInBlock > 1">
+      {{day.holiday}}
+    </article>
+    <article class="event-preview"
+    ng-repeat="event in events[day.date.getDate()] | limitTo: countEventsInBlock - (day.holiday ? 1 : 0)"
+    ng-show="events[day.date.getDate()].length < countEventsInBlock && countEventsInBlock > 1">
+      {{event.title}}
+    </article>
+    <article class="event-preview"
+    ng-repeat="event in events[day.date.getDate()] | limitTo: countEventsInBlock - 1 - (day.holiday ? 1 : 0)"
+    ng-show="events[day.date.getDate()].length >= countEventsInBlock && countEventsInBlock > 1">
+      {{event.title}}
+    </article>
+    <article class="event-preview event-preview-more"
+    ng-show="events[day.date.getDate()].length >= countEventsInBlock && countEventsInBlock > 1">
+      + {{events[day.date.getDate()].length-countEventsInBlock + 1 + (day.holiday ? 1 : 0)}} more..
+    </article>
+    <div class="event-preview-count-small"
+    ng-show="events[day.date.getDate()].length + (day.holiday ? 1 : 0) > 0 && countEventsInBlock < 2">
+      {{
+        events[day.date.getDate()].length + (day.holiday ? 1 : 0)
+      }}
+    </div>
+    <div class="event-preview-count-small event-preview-count-small-for-phone"
+    ng-show="events[day.date.getDate()].length + (day.holiday ? 1 : 0) > 0">
+      {{
+        events[day.date.getDate()].length + (day.holiday ? 1 : 0)
+      }}
+    </div>
+  </article>
+</div>

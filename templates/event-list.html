@@ -1,0 +1,81 @@
+<div class="event-list">
+  <div class="event-list-title">
+    <p class="month-and-year" id="month-and-year">{{month}} {{localDate.date.getDate()}}, <span>{{localDate.date.getFullYear()}}</span></p>
+    <p class="day">{{localDay}}</p>
+    <div class="back-btn" ng-click="backToCalendar()" title="back to calendar"></div>
+    <div class="add-btn" ng-click="addEvent()" title="add event"></div>
+  </div>
+  <article class="events">
+    <div ng-repeat="hour in [12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11] track by $index">
+      <div class="hour">
+        <p>{{hour + ($index < 12 ? ' a.m.' : ' p.m.')}}</p>
+      </div>
+      <div class="events-in-hour">
+        <div class="event event-holiday" ng-show="localDate.holiday && $index < 1">
+          <p class="event-time event-time-holiday">
+            Holiday:
+          </p>
+          <p class="event-title">{{localDate.holiday}}</p>
+        </div>
+        <div class="event" ng-repeat="item in localDate.events[$index] track by $index" ng-click="viewEvent(item, $parent.$index)">
+          <p class="event-time">
+            {{
+              item.time.getHours() > 12 ? item.time.getHours()-12 : (item.time.getHours() == 0 ? 12 : item.time.getHours())
+            }}:{{
+              (item.time.getMinutes()/10 > 1 ? item.time.getMinutes() : "0" + item.time.getMinutes())
+              + (item.time.getHours() < 12 ? ' a.m.' : ' p.m.')
+            }}
+          </p>
+          <p class="event-title">{{item.title}}</p>
+          <div class="remove-btn" ng-click="removeEvent(item, $parent.$index); $event.stopPropagation()" title="remove"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+  <div class="event-window" ng-show="showAddEventBool || showViewEventBool || showFreeDay">
+    <div class="close-panel" ng-click="closeEventWindow()"></div>
+    <div class="form" ng-class="{'form-no-animation': noAnimation}" ng-show="showAddEventBool || showViewEventBool || showFreeDay">
+      <div class="free-day inner-form" ng-show="showFreeDay" ng-click="backToCalendar()" title="back to calendar">
+        <p>
+          No events on this day.
+        </p>
+        <div class="add-btn" ng-click="addEvent(); $event.stopPropagation()" title="add event" ></div>
+      </div>
+      <div class="inner-form" ng-class="{'inner-form-view': showViewEventBool}">
+        <div class="time">
+          <p id="time" ng-show="showViewEventBool">
+            {{
+              event.time.getHours() > 12 ? event.time.getHours()-12 : (event.time.getHours() == 0 ? 12 : event.time.getHours())
+            }}:{{
+              (event.time.getMinutes()/10 > 1 ? event.time.getMinutes() : "0" + event.time.getMinutes())
+              + (event.time.getHours() < 12 ? ' a.m.' : ' p.m.')
+            }}
+          </p>
+          <uib-timepicker ng-show="showAddEventBool" ng-model="time"></uib-timepicker>
+          <p class="time-message" ng-show="timeMessageBool">*only future</p>
+          <p class="time-message-incorrect" ng-show="timeMessageIncorrectBool">*incorrect</p>
+        </div>
+        <div class="title" ng-class="{'title-view': showViewEventBool}">
+          <p name="title" ng-show="showAddEventBool">
+            Title
+          </p>
+          <p id="title" ng-show="showViewEventBool">{{event.title}}</p>
+          <input type="text" value="" ng-model="title" ng-show="showAddEventBool">
+          <p class="title-message" ng-show="titleMessageBool">*not empty input</p>
+        </div>
+        <div class="description" ng-class="{'description-view': showViewEventBool}">
+          <p ng-show="showAddEventBool">
+            Description
+          </p>
+          <p id="description" ng-show="showViewEventBool">{{event.description}}</p>
+          <textarea name="name" rows="8" cols="40" ng-model="description" ng-show="showAddEventBool"></textarea>
+          <p class="description-message" ng-show="descriptionMessageBool">*must be empty or have at least 5 words</p>
+        </div>
+        <div class="ok-btn" ng-click="ok(saveEvent)" ng-show="!showEditEventBool && showAddEventBool" title="save"></div>
+        <div class="ok-btn" ng-click="ok(updateEvent, event)" ng-show="showEditEventBool" title="save"></div>
+      </div>
+      <div class="edit-btn" ng-click="editEvent(event)" title="edit" ng-show="showViewEventBool"></div>
+      <div id="remove-btn" ng-click="removeEvent(event); closeEventWindow()" title="remove" ng-show="showViewEventBool"></div>
+    </div>
+  </div>
+</div>

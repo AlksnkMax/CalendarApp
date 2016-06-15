@@ -1,0 +1,21 @@
+/* FX FIX */
+.container, section {
+  min-width: $container-sm;
+}
+
+/* MEDIA */
+@mixin respond-to($media) {
+  @if $media == mobile {
+    @media only screen and (max-device-width: 1280px) and (orientation: portrait) { @content; }
+  }
+}
+
+
+
+/* COLORS */
+
+$clBrown: #c5aca0;
+$clRed: #e64b55;
+$clDarkGrey: #e1e6e9;
+$clLightGrey: #ebefef;
+$clBgGrey: #f4f5f9;

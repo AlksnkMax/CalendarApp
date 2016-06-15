@@ -1,0 +1,976 @@
+* {
+  outline: none;
+  text-decoration: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  overflow-x: hidden;
+  position: relative;
+}
+html {
+  overflow-y: hidden;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+.month-and-year {
+  font-weight: 700;
+  font-size: 30px;
+  margin: 0 0 30px 30px;
+
+  span {
+    font-weight: 400;
+  }
+
+  @include respond-to(mobile) {
+    font-size: 50px;
+    margin: 0 0 50px 50px;
+  }
+}
+
+#month-and-year {
+  margin-top: 30px;
+
+  @include respond-to(mobile) {
+    margin-top: 50px;
+  }
+}
+
+.day {
+  font-size: 20px;
+  margin: -25px 0 60px 30px;
+
+  @include respond-to(mobile) {
+    font-size: 30px;
+    margin: -45px 0 60px 50px;
+  }
+}
+
+.calendar {
+  background: $clBgGrey;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 30px;
+
+  @include respond-to(mobile) {
+    padding-top: 50px;
+  }
+}
+
+.event-list {
+  background: $clBgGrey;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 30px 0 0;
+}
+
+.day-block {
+  height: calc((100% - 102px)/6);
+  text-align: right;
+  font-weight: 400;
+  border: 1px solid $clLightGrey;
+  padding: 0 5px;
+
+  .date {
+    height: 19px;
+    font-size: 14px;
+  }
+
+  @include respond-to(mobile) {
+    height: calc((100% - 165px)/6);
+    border: 2px solid $clLightGrey;
+
+    .date {
+      height: 42px;
+      font-size: 30px;
+    }
+  }
+}
+
+.event-preview {
+  text-align: left;
+  margin-bottom: 3px;
+  border-radius: 3px;
+  background-color: #e2d6d0;
+  padding: 0 5px 0 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+  font-size: 14px;
+  height: 19px;
+
+  @include respond-to(mobile) {
+    display: none;
+  }
+}
+
+.holiday {
+  background-color: $clRed;
+}
+
+.event-preview-more {
+  background-color: rgba(0,0,0,0);
+}
+
+.event-preview-count {
+  color: $clRed;
+}
+
+.event-preview-count-small {
+  position: absolute;
+  font-size: 12px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  bottom: 5px;
+  left: 5px;
+  text-align: center;
+  color: white;
+  background-color: $clRed;
+  border-radius: 25px;
+
+  @include respond-to(mobile) {
+    display: none;
+  }
+}
+
+.event-preview-count-small-for-phone {
+  display: none;
+  font-size: 30px;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  bottom: calc(50% - 25px);
+  left: calc(50% - 25px);
+
+  @include respond-to(mobile) {
+    display: block;
+  }
+}
+
+.real-day {
+  &:hover {
+    background: $clBrown;
+    transition: 1s;
+    border-color: $clBrown;
+    cursor: pointer;
+
+    .event-preview-more {
+      transition: 5s;
+      background: $clBrown;
+    }
+  }
+}
+
+.day-in-week-block {
+  text-align: center;
+  font-weight: 700;
+
+  @include respond-to(mobile) {
+    display: none;
+  }
+}
+
+.day-in-week-block-3 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 30px;
+  display: none;
+
+  @include respond-to(mobile) {
+    display: block;
+  }
+}
+
+.today {
+  border: 2px solid $clBrown;
+
+  @include respond-to(mobile) {
+    border: 4px solid $clBrown;
+  }
+}
+
+.day-off {
+  background: $clDarkGrey;
+}
+
+.hour {
+  float: left;
+  height: 50px;
+  width: 80px;
+  padding: 0 10px 0 20px;
+  text-align: right;
+
+  p {
+    margin-top: -10px;
+    font-size: 14px;
+  }
+
+  @include respond-to(mobile) {
+    height: 80px;
+    width: 120px;
+    padding: 0 10px 0 20px;
+    p {
+      font-size: 25px;
+    }
+  }
+}
+
+.events-in-hour {
+  min-height: 50px;
+  width: calc(100% - 80px);
+  border-top: 1px solid $clDarkGrey;
+  float: left;
+  background: $clLightGrey;
+  padding: 10px 0;
+
+  @include respond-to(mobile) {
+    min-height: 80px;
+    width: calc(100% - 120px);
+  }
+}
+
+.event {
+  width: 100%;
+  height: 29px;
+  padding: 0 20px;
+  overflow: hidden;
+  margin: auto;
+  line-height: 30px;
+  border: 1px solid $clLightGrey;
+  position: relative;
+
+  &:hover {
+    transition: 0.7s;
+    border: 1px solid $clBrown;
+    cursor: pointer;
+
+    .remove-btn {
+      display: block;
+    }
+  }
+
+  @include respond-to(mobile) {
+    height: 59px;
+    line-height: 60px;
+    border: 2px solid $clLightGrey;
+
+    .remove-btn {
+      display: block;
+    }
+  }
+}
+
+.event-holiday {
+  border: none;
+  position: relative;
+
+  &:hover {
+    border: none;
+    cursor: auto;
+  }
+}
+
+.event-time {
+  margin: 0;
+  color: $clBrown;
+  float: left;
+  width: 80px;
+  font-size: 14px;
+
+  @include respond-to(mobile) {
+    font-size: 25px;
+    width: 140px;
+  }
+}
+
+.event-time-holiday {
+  font-weight: 700;
+  color: $clRed;
+}
+
+.event-title {
+  margin: 0;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-right: 20px;
+  font-size: 14px;
+
+  @include respond-to(mobile) {
+    font-size: 25px;
+  }
+}
+
+.event-list-title {
+  width: 100%;
+  height: 140px;
+  position: fixed;
+  background: $clBgGrey;
+  z-index: 5;
+
+  @include respond-to(mobile) {
+    height: 180px;
+  }
+}
+
+.events {
+  margin-top: 150px;
+
+  @include respond-to(mobile) {
+    margin-top: 210px;
+  }
+}
+
+.btn-link, .btn {
+  color: $clBrown;
+  outline: none;
+
+  &:hover, &:visited, &:focus, &:active, &:link, &:target {
+    background-color: white !important;
+    color: $clBrown;
+    outline: none !important;
+  }
+  &:hover, &:active {
+    color: #925e46;
+  }
+}
+
+.btn-default {
+  color: black;
+
+  &:hover, &:visited, &:focus, &:active, &:link, &:target {
+    color: black;
+  }
+}
+
+.back-btn, .add-btn {
+  width: 80px;
+  height: 80px;
+  border: 1px solid $clDarkGrey;
+  border-radius: 4px;
+  position: absolute;
+  top: calc(50% - 40px);
+  right: 30px;
+  background: $clLightGrey;
+
+  &::before {
+    color: $clDarkGrey;
+    font-family: "fontello";
+    position: absolute;
+  }
+  &:hover {
+    border-color: $clBrown;
+    transition: 1s;
+    cursor: pointer;
+
+    &::before {
+      color: $clBrown;
+      transition: 1s;
+    }
+  }
+
+  @include respond-to(mobile) {
+    width: 120px;
+    height: 120px;
+    border: 2px solid $clDarkGrey;
+    top: calc(50% - 40px);
+  }
+}
+
+.add-btn {
+  right: 120px;
+
+  &::before {
+    content: "\e801";
+    font-size: 50px;
+    top: calc(50% - 34px);
+    left: calc(50% - 19px);
+  }
+
+  @include respond-to(mobile) {
+    right: 160px;
+
+    &::before {
+      font-size: 70px;
+      top: calc(50% - 44px);
+      left: calc(50% - 26px);
+    }
+  }
+}
+
+.back-btn {
+  &::before {
+    content: "\e800";
+    font-size: 40px;
+    top: calc(50% - 28px);
+    left: calc(50% - 18px);
+  }
+
+  @include respond-to(mobile) {
+    &::before {
+      font-size: 65px;
+      top: calc(50% - 44px);
+      left: calc(50% - 30px);
+    }
+  }
+}
+
+.remove-btn {
+  display: none;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 0;
+  right: 10px;
+
+  &::before {
+    content: "\e803";
+    color: $clDarkGrey;
+    font-family: "fontello";
+    font-size: 15px;
+  }
+  &:hover {
+    cursor: pointer;
+
+    &::before {
+      color: $clBrown;
+      transition: 0.7s;
+    }
+  }
+
+  @include respond-to(mobile) {
+    width: 25px;
+    height: 25px;
+
+    &::before {
+      font-size: 25px;
+    }
+  }
+}
+
+.ok-btn {
+  width: 560px;
+  height: 30px;
+  border: 1px solid $clDarkGrey;
+  border-radius: 4px;
+  background: $clLightGrey;
+  position: relative;
+  top: 278px;
+  left: calc(50% - 280px);
+
+  &::before {
+    content: "\e802";
+    color: $clDarkGrey;
+    font-family: "fontello";
+    font-size: 20px;
+    position: absolute;
+    top: calc(50% - 15px);
+    left: calc(50% - 10px);
+  }
+  &:hover {
+    border-color: $clBrown;
+    transition: 1s;
+    cursor: pointer;
+
+    &::before {
+      color: $clBrown;
+      transition: 1s;
+      cursor: pointer;
+    }
+  }
+
+  @include respond-to(mobile) {
+    width: calc(100% - 60px);
+    height: 100px;
+    top: calc(100% - 120px);
+    left: 30px;
+
+    &::before {
+      font-size: 60px;
+      top: calc(50% - 40px);
+      left: calc(50% - 30px);
+    }
+  }
+}
+
+.edit-btn, #remove-btn {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  float: left;
+
+  &::before {
+    color: $clDarkGrey;
+    font-family: "fontello";
+  }
+  &:hover {
+    cursor: pointer;
+
+    &::before {
+      color: $clBrown;
+      transition: 0.7s;
+    }
+  }
+
+  @include respond-to(mobile) {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+.edit-btn {
+  left: calc(50% - 25px);
+
+  &::before {
+    content: "\e804";
+    font-size: 20px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+  }
+
+  @include respond-to(mobile) {
+    left: calc(50% - 70px);
+
+    &::before {
+      font-size: 50px;
+      left: 12px;
+    }
+  }
+}
+
+#remove-btn {
+  left: 50%;
+
+  &::before {
+    content: "\e805";
+    font-size: 20px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+
+  @include respond-to(mobile) {
+    left: calc(50% - 35px);
+
+    &::before {
+      font-size: 50px;
+      left: 15px;
+    }
+  }
+}
+
+.event-window {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.close-panel {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.65);
+  position: fixed;
+  cursor: default;
+}
+
+.form {
+  top: calc(50% - 150px);
+  left: calc(50% - 310px);
+  font-size: 14px;
+  z-index: 20;
+  margin: 0;
+  width: 620px;
+  height: 320px;
+  position: fixed;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
+  transition:.5s all ease-in-out;
+  -moz-transition:.5s all ease-in-out;
+  -webkit-transition:.5s all ease-in-out;
+  -webkit-animation:slideInDownWindow .5s both ease-in-out;
+	-moz-animation:slideInDownWindow .5s both ease-in-out;
+	animation:slideInDownWindow .5s both ease-in-out;
+
+  @include respond-to(mobile) {
+    top: calc(50% - 350px);
+    left: 5%;
+    font-size: 14px;
+    z-index: 20;
+    margin: 0;
+    width: 90%;
+    height: 700px;
+  }
+}
+
+.form-no-animation {
+  transition: none;
+  -moz-transition: none;
+  -webkit-transition: none;
+  -webkit-animation: none;
+	-moz-animation: none;
+	animation: none;
+}
+
+.free-day {
+  line-height: 320px;
+
+  &:hover {
+    cursor: pointer;
+  }
+  p {
+    text-align: center;
+    font-weight: 700;
+    font-size: 25px;
+  }
+  .add-btn {
+    width: 35px;
+    height: 35px;
+    top: calc(100% - 40px);
+    right: calc(50% - 17px);
+    background: none;
+    border: none;
+    line-height: 35px;
+
+    &::before {
+      font-size: 35px;
+      top: 0;
+      left: calc(50% - 14px);
+      color: inherit;
+    }
+    &:hover {
+      &::before {
+        color: $clBrown;
+        transition: 0.7s;
+      }
+    }
+  }
+
+  @include respond-to(mobile) {
+    line-height: normal;
+
+    p {
+      position: absolute;
+      top: calc(50% - 23px);
+      left: calc(50% - 180px);
+      font-size: 35px;
+    }
+    .add-btn {
+      width: 50px;
+      height: 50px;
+      top: calc(100% - 70px);
+      right: calc(50% - 25px);
+      line-height: 50px;
+
+      &::before {
+        font-size: 50px;
+        left: calc(50% - 22px);
+      }
+    }
+  }
+}
+
+.uib-timepicker {
+  @include respond-to(mobile) {
+    margin-top: 15px;
+
+    .uib-separator {
+      font-size: 30px;
+    }
+    .btn-link {
+      width: 90px;
+      height: 50px;
+
+      .glyphicon {
+        &::before {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+}
+
+.uib-time {
+  @include respond-to(mobile) {
+    input, button {
+      width: 90px;
+      height: 80px;
+      font-size: 30px;
+    }
+  }
+}
+
+.inner-form {
+  width: 100%;
+  height: 100%;
+}
+
+.inner-form-view {
+  height: calc(100% - 40px);
+  overflow-y: auto;
+
+  @include respond-to(mobile) {
+    height: calc(100% - 80px);
+  }
+}
+
+.time, .title {
+  input {
+    border-radius: 4px;
+    border: 1px solid $clDarkGrey;
+
+    &:focus {
+      border-color: $clBrown;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.time {
+  float: left;
+  min-width: 150px;
+  padding: 0 20px 0 30px;
+  position: relative;
+
+  #time {
+    margin-top: 20px;
+    font-weight: 700;
+    color: $clBrown;
+  }
+
+  @include respond-to(mobile) {
+    min-width: 150px;
+    padding: 0 30px 0 50px;
+
+    #time {
+      font-size: 30px;
+      margin-top: 40px;
+    }
+  }
+}
+
+.title {
+  width: 418px;
+  float: left;
+  padding: 0 30px 0 20px;
+  word-wrap:break-word;
+  position: relative;
+
+  input {
+    width: 100%;
+  }
+  p {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  #title {
+    margin: 20px 0 20px 0;
+    font-weight: 700;
+  }
+
+  @include respond-to(mobile) {
+    width: calc(100% - 370px);
+    input {
+      height: 50px;
+      font-size: 30px;
+    }
+    p {
+      margin-top: 38px;
+      font-size: 30px;
+    }
+    #title {
+      margin: 40px 0 20px 0;
+    }
+  }
+}
+
+.title-view {
+  width: 448px;
+
+  @include respond-to(mobile) {
+    width: calc(100% - 230px);
+  }
+}
+
+.description {
+  width: 620px;
+  float: left;
+  padding: 0 30px;
+  word-wrap:break-word;
+  position: relative;
+
+  textarea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+    border-radius: 4px;
+    border: 1px solid $clDarkGrey;
+
+    &:focus {
+      border-color: $clBrown;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+
+  @include respond-to(mobile) {
+    width: 100%;
+
+    textarea {
+      height: 320px;
+      font-size: 30px;
+      line-height: 30px;
+    }
+    p {
+      margin-top: 10px;
+      font-size: 30px;
+    }
+  }
+}
+
+.description-view {
+  width: 600px;
+
+  @include respond-to(mobile) {
+    width: 100%;
+
+    p {
+      font-size: 30px;
+    }
+  }
+}
+
+.time-message, .title-message, .description-message, .time-message-incorrect {
+  position: absolute;
+  color: red;
+  top: 0;
+}
+
+.time-message, .time-message-incorrect {
+  left: 120px;
+  top: 10px;
+
+  @include respond-to(mobile) {
+    font-size: 30px;
+    left: 158px;
+    top: -4px;
+  }
+}
+
+.title-message {
+  left: 56px;
+
+  @include respond-to(mobile) {
+    left: 100px;
+  }
+}
+
+.description-message {
+  left: 114px;
+
+  @include respond-to(mobile) {
+    left: 200px;
+  }
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  position:absolute;
+  overflow-y: hidden;
+  transition:.5s all ease-in-out;
+  -moz-transition:.5s all ease-in-out;
+  -webkit-transition:.5s all ease-in-out;
+}
+
+.style-event-list.ng-enter {
+  -webkit-animation:slideInUp .5s both ease-in-out;
+	-moz-animation:slideInUp .5s both ease-in-out;
+	animation:slideInUp .5s both ease-in-out;
+}
+
+.style-event-list.ng-leave {
+  -webkit-animation:slideOutDown .5s both ease-in-out;
+	-moz-animation:slideOutDown .5s both ease-in-out;
+	animation:slideOutDown .5s both ease-in-out;
+}
+
+.style-calendar.ng-enter {
+  -webkit-animation:slideInDown .5s both ease-in-out;
+	-moz-animation:slideInDown .5s both ease-in-out;
+	animation:slideInDown .5s both ease-in-out;
+}
+
+.style-calendar.ng-leave {
+  -webkit-animation:slideOutUp .5s both ease-in-out;
+	-moz-animation:slideOutUp .5s both ease-in-out;
+	animation:slideOutUp .5s both ease-in-out;
+}
+
+@keyframes slideOutDown {
+	to 		{ transform: translateY(-100%); }
+}
+@-moz-keyframes slideOutDown {
+	to 		{ -moz-transform: translateY(-100%); }
+}
+@-webkit-keyframes slideOutDown {
+	to 		{ -webkit-transform: translateY(-100%); }
+}
+@keyframes slideInUp {
+	from 	{ transform:translateY(100%); }
+	to 		{ transform: translateY(0); }
+}
+@-moz-keyframes slideInUp {
+	from 	{ -moz-transform:translateY(100%); }
+	to 		{ -moz-transform: translateY(0); }
+}
+@-webkit-keyframes slideInUp {
+	from 	{ -webkit-transform:translateY(100%); }
+	to 		{ -webkit-transform: translateY(0); }
+}
+@keyframes slideOutUp {
+	to 		{ transform: translateY(100%); }
+}
+@-moz-keyframes slideOutUp {
+	to 		{ -moz-transform: translateY(100%); }
+}
+@-webkit-keyframes slideOutUp {
+	to 		{ -webkit-transform: translateY(100%); }
+}
+@keyframes slideInDown {
+	from 	{ transform:translateY(-100%); }
+	to 		{ transform: translateY(0); }
+}
+@-moz-keyframes slideInDown {
+	from 	{ -moz-transform:translateY(-100%); }
+	to 		{ -moz-transform: translateY(0); }
+}
+@-webkit-keyframes slideInDown {
+	from 	{ -webkit-transform:translateY(-100%); }
+	to 		{ -webkit-transform: translateY(0); }
+}
+@-webkit-keyframes slideInDownWindow {
+	from 	{ -webkit-transform:translateY(-200%); }
+	to 		{ -webkit-transform: translateY(0); }
+}
